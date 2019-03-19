@@ -6,6 +6,7 @@
 #include <asio.hpp>
 #include <functional>
 #include <thread>
+#include <random>
 #include <chrono>
 
 class Printer {
@@ -13,9 +14,10 @@ class Printer {
         std::mutex                                  global_stream_lock;
         std::shared_ptr< asio::io_service >         io_service;
         std::shared_ptr< asio::io_service::work >   work;
+        std::random_device                          rd;
 
         void                                        worksForThreads();
-        void                                        printOneNumber(int x);
+        void                                        printOneNumber();
         void                                        worksOfService();
 
     public:

@@ -12,16 +12,21 @@ void Printer::worksForThreads() {
     io_service->run();
 }
 
-void Printer::printOneNumber(int i) {
+void Printer::printOneNumber() {
     global_stream_lock.lock();
-    std::cout << "[" <<  std::this_thread::get_id()  << "] " << __FUNCTION__  << " i = " << i <<  std::endl;
+
+    std::mt19937_64 gen(rd());  //Predefined random number generators
+    std::uniform_int_distribution<int> dis(1,1000); //Random number distributions
+
+    std::cout << "Thread [" <<  std::this_thread::get_id()  << "] " << " print: " << dis(gen) <<  std::endl;
+    std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+
     global_stream_lock.unlock();
 }
 
 void Printer::worksOfService() {
     for(int i = 0; i <100; i++) {
-        io_service -> post(std::bind(&printOneNumber, this, i));
-        std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
+        io_service -> post(std::bind(&printOneNumber, this));
     }
 }
 
