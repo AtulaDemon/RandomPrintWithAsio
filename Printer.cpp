@@ -15,6 +15,7 @@ void Printer::worksForThreads() {
 void Printer::printOneNumber() {
     global_stream_lock.lock();
 
+    std::random_device rd;
     std::mt19937_64 gen(rd());  //Predefined random number generators
     std::uniform_int_distribution<int> dis(1,1000); //Random number distributions
 
